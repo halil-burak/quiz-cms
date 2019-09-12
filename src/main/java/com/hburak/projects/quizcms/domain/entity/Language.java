@@ -27,4 +27,8 @@ public class Language extends BaseEntity implements Serializable {
             joinColumns = @JoinColumn(name = "language_id"),
             inverseJoinColumns = @JoinColumn(name = "platform_id"))
     private List<Platform> platforms = new ArrayList<>();
+
+    public Language(Long id) {
+        super.setId(id);
+    }
 }

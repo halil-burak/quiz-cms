@@ -32,5 +32,9 @@ public class Category extends BaseEntity implements Serializable {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "quiz_id"))
     private List<Quiz> quizzes = new ArrayList<>();
+
+    public Category(Long id) {
+        super.setId(id);
+    }
 }
 // todo fix the jpa annotations and place the join tables for many to many relationships

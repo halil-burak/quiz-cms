@@ -37,4 +37,8 @@ public class Quiz extends BaseEntity implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "language_id", referencedColumnName = "id")
     private Language language;
+
+    public Quiz(Long id) {
+        super.setId(id);
+    }
 }
