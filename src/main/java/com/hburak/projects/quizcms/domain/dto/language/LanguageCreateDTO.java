@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LanguageGetDTO {
-    private Long id;
+public class LanguageCreateDTO {
     private String name;
     private String shortName;
 }

@@ -33,6 +33,10 @@ public class Platform extends BaseEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
+    public Platform(Long id) {
+        super.setId(id);
+    }
+
     private void addQuizz(Quiz quiz) {
         this.getQuizzes().add(quiz);
     }

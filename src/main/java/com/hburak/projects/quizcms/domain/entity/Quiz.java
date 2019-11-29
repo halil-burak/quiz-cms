@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Quiz extends BaseEntity implements Serializable {
     private String name;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "platform_id")

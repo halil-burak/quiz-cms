@@ -20,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Category extends BaseEntity implements Serializable {
     private String name;
+    private String description;
 
     @ManyToMany
     @JoinTable(name = "platform_category",

@@ -17,6 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 public class Question extends BaseEntity implements Serializable {
     private String content;
+    private String hint;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "language_id", referencedColumnName = "id")
+    private Language language;
 
     @ManyToMany
     @JoinTable(name = "question_quiz",
