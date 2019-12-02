@@ -38,8 +38,8 @@ public class QuizServiceImpl implements QuizService {
                 .description(quizCreateDTO.getDescription())
                 .language(new Language(quizCreateDTO.getLanguageId()))
                 .platform(new Platform(quizCreateDTO.getPlatformId()))
-                .categories(quizCreateDTO.getCategoryIds().stream().map(Category::getId).collect(Collectors.toList()))
-                .questions(quizCreateDTO.getQuestionIds().stream().map(Question::getId).collect(Collectors.toList()))
+                .categories(quizCreateDTO.getCategoryIds().stream().map(Category::new).collect(Collectors.toList()))
+                .questions(quizCreateDTO.getQuestionIds().stream().map(Question::new).collect(Collectors.toList()))
                 .build();
         return repository.save(quiz).getId();
     }

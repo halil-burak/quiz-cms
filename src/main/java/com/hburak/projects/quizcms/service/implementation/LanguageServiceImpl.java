@@ -40,7 +40,13 @@ public class LanguageServiceImpl implements LanguageService {
 
     @Override
     public void update(Long id, LanguageCreateDTO platformUpdateDTO) {
-
+        Language language = repository.getOne(id);
+        if (language != null) {
+            language.setName(platformUpdateDTO.getName());
+            language.setShortName(platformUpdateDTO.getShortName());
+            //since JPA here runs on a managed mode, we do not specifically need to call save method on the object,it'll be updated.
+            //repository.save(language);
+        }
     }
 
     @Override

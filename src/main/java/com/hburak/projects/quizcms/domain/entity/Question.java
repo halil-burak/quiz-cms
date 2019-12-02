@@ -32,6 +32,10 @@ public class Question extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 
+    public Question(Long id) {
+        super.setId(id);
+    }
+
     private void addAnswer(Answer answer) {
         this.getAnswers().add(answer);
     }
