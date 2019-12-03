@@ -1,11 +1,6 @@
 package com.hburak.projects.quizcms.service.implementation;
 
-import com.hburak.projects.quizcms.domain.dto.category.CategoryGetDTO;
-import com.hburak.projects.quizcms.domain.dto.language.LanguageGetDTO;
-import com.hburak.projects.quizcms.domain.dto.platform.PlatformCreateDTO;
-import com.hburak.projects.quizcms.domain.dto.platform.PlatformGetDTO;
-import com.hburak.projects.quizcms.domain.dto.platform.PlatformUpdateDTO;
-import com.hburak.projects.quizcms.domain.dto.quiz.QuizGetDTO;
+import com.hburak.projects.quizcms.domain.dto.platform.*;
 import com.hburak.projects.quizcms.domain.entity.Category;
 import com.hburak.projects.quizcms.domain.entity.Language;
 import com.hburak.projects.quizcms.domain.entity.Platform;
@@ -16,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,33 +22,33 @@ public class PlatformServiceImpl implements PlatformService {
     private final PlatformRepository repository;
 
     @Override
-    public List<PlatformCreateDTO> getAll() {
+    public List<PlatformLightGetDTO> getAll() {
         return repository.findAll().stream().map(platform -> {
-            PlatformCreateDTO platformDTO = new PlatformCreateDTO();
+            PlatformLightGetDTO platformDTO = new PlatformLightGetDTO();
+            platformDTO.setId(platform.getId());
             platformDTO.setName(platform.getName());
-            platformDTO.setCategories(platform.getCategories().stream().map(category -> {
-                CategoryGetDTO categoryDTO = new CategoryGetDTO();
-                return categoryDTO;
-            }).collect(Collectors.toList()));
-            platformDTO.setLanguages(platform.getLanguages().stream().map(language -> {
-                LanguageGetDTO languageDTO = new LanguageGetDTO();
-                return languageDTO;
-            }).collect(Collectors.toList()));
-            platformDTO.setQuizzes(platform.getQuizzes().stream().map(quiz -> {
-                QuizGetDTO quizDTO = new QuizGetDTO();
-                return quizDTO;
-            }).collect(Collectors.toList()));
+            platformDTO.setCategories(platform.getCategories().stream().map(Category::getId).collect(Collectors.toList()));
+            platformDTO.setLanguages(platform.getLanguages().stream().map(Language::getId).collect(Collectors.toList()));
+            platformDTO.setQuizzes(platform.getQuizzes().stream().map(Quiz::getId).collect(Collectors.toList()));
             return platformDTO;
         }).collect(Collectors.toList());
     }
 
+    // todo code refactoring : replace lambda with method reference
     @Override
     public Long save(PlatformCreateDTO platformDTO) {
         Platform platform = new Platform();
         platform.setName(platformDTO.getName());
-        platform.getCategories().addAll(platformDTO.getCategories().stream().map(categoryDTO -> new Category(categoryDTO.getId())).collect(Collectors.toList()));
-        platform.getLanguages().addAll(platformDTO.getLanguages().stream().map(languageDTO -> new Language(languageDTO.getId())).collect(Collectors.toList()));
-        platform.getQuizzes().addAll(platformDTO.getQuizzes().stream().map(quizGetDTO -> new Quiz(quizGetDTO.getId())).collect(Collectors.toList()));
+        platform.getLanguages().addAll(platformDTO.getLanguages().stream().map(aLong -> {
+            return new Language(aLong);
+        }).collect(Collectors.toList()));
+        platform.getCategories().addAll(platformDTO.getCategories().stream().map(aLong -> {
+            return new Category(aLong);
+        }).collect(Collectors.toList()));
+        platform.getQuizzes().addAll(platformDTO.getQuizzes().stream().map(aLong -> {
+            return new Quiz(aLong);
+        }).collect(Collectors.toList()));
+
         return repository.save(platform).getId();
     }
 
@@ -69,16 +65,31 @@ public class PlatformServiceImpl implements PlatformService {
     }
 
     @Override
-    public PlatformGetDTO getOne(Long id) {
+    public PlatformLightGetDTO getOne(Long id) {
         Platform platform = repository.getOne(id);
-        PlatformGetDTO platformGetDTO = new PlatformGetDTO();
+        PlatformLightGetDTO platformGetDTO = new PlatformLightGetDTO();
         platformGetDTO.setId(platform.getId());
         platformGetDTO.setName(platform.getName());
+        platformGetDTO.setCategories(platform.getCategories().stream().map(Category::getId).collect(Collectors.toList()));
+        platformGetDTO.setLanguages(platform.getLanguages().stream().map(Language::getId).collect(Collectors.toList()));
+        platformGetDTO.setQuizzes(platform.getQuizzes().stream().map(Quiz::getId).collect(Collectors.toList()));
         return platformGetDTO;
     }
 
     @Override
     public List<PlatformCreateDTO> getPlatformsByCategory(Long categoryId) {
         return null;
+    }
+
+    @Override
+    public void updateLangOfPlatform(Long id, PlatformLangUpdateDTO platformLangUpdateDTO) {
+        Platform platform = repository.getOne(id);
+        platform.getLanguages().clear();
+        List<Language> languages = new ArrayList<>();
+        for (Long lang : platformLangUpdateDTO.getLanguages()) {
+            Language lang1 = new Language(lang);
+            languages.add(lang1);
+        }
+        platform.setLanguages(languages);
     }
 }

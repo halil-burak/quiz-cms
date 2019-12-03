@@ -1,6 +1,7 @@
 package com.hburak.projects.quizcms.controller;
 
 import com.hburak.projects.quizcms.domain.dto.platform.PlatformCreateDTO;
+import com.hburak.projects.quizcms.domain.dto.platform.PlatformLangUpdateDTO;
 import com.hburak.projects.quizcms.domain.dto.platform.PlatformUpdateDTO;
 import com.hburak.projects.quizcms.service.PlatformService;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/platforms")
 public class PlatformController {
-    private PlatformService platformService;
+    private final PlatformService platformService;
 
     @GetMapping("/listAll")
     public ResponseEntity<?> getPlatforms() {
         return new ResponseEntity<Object>(platformService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/save")
+    @GetMapping("/platform/{id}")
+    public ResponseEntity<?> getOnePlatform(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<Object>(platformService.getOne(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
     public Long savePlatform(@RequestBody PlatformCreateDTO platformDTO) {
         return platformService.save(platformDTO);
     }
@@ -34,5 +40,10 @@ public class PlatformController {
     @DeleteMapping("/delete/{id}")
     public void deletePlatform(@PathVariable(name = "id") Long id) {
         platformService.delete(id);
+    }
+
+    @PutMapping("/{id}/add-language")
+    public void updateLanguagesOfPlatform(@PathVariable(name = "id") Long id, @RequestBody PlatformLangUpdateDTO platformLangUpdateDTO) {
+        // todo
     }
 }

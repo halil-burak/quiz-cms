@@ -8,7 +8,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PlatformCreateDTO {
+public class PlatformLightGetDTO {
+    private Long id;
     private String name;
     private List<Long> categories = new ArrayList<>();
     private List<Long> quizzes = new ArrayList<>();
