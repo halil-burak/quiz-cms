@@ -12,4 +12,5 @@ public interface PlatformService {
     PlatformLightGetDTO getOne(Long id);
     List<PlatformCreateDTO> getPlatformsByCategory(Long categoryId);
     void updateLangOfPlatform(Long id, PlatformLangUpdateDTO platformLangUpdateDTO);
+    void updateCategoriesOfPlatform(Long id, PlatformCategoryUpdateDTO platformCategoryUpdateDTO);
 }

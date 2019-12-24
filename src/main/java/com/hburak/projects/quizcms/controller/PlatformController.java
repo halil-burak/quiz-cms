@@ -1,5 +1,6 @@
 package com.hburak.projects.quizcms.controller;
 
+import com.hburak.projects.quizcms.domain.dto.platform.PlatformCategoryUpdateDTO;
 import com.hburak.projects.quizcms.domain.dto.platform.PlatformCreateDTO;
 import com.hburak.projects.quizcms.domain.dto.platform.PlatformLangUpdateDTO;
 import com.hburak.projects.quizcms.domain.dto.platform.PlatformUpdateDTO;
@@ -32,7 +33,7 @@ public class PlatformController {
         return platformService.save(platformDTO);
     }
 
-    @PutMapping("/update/{id]")
+    @PutMapping("/update/{id}")
     public void updatePlatform(@PathVariable(name = "id") Long id, @RequestBody PlatformUpdateDTO platformUpdateDTO) {
         platformService.update(id, platformUpdateDTO);
     }
@@ -44,6 +45,11 @@ public class PlatformController {
 
     @PutMapping("/{id}/add-language")
     public void updateLanguagesOfPlatform(@PathVariable(name = "id") Long id, @RequestBody PlatformLangUpdateDTO platformLangUpdateDTO) {
-        // todo
+        platformService.updateLangOfPlatform(id, platformLangUpdateDTO);
+    }
+
+    @PutMapping("/{id}/add-category")
+    public void updateCategoriesOfPlatform(@PathVariable(name = "id") Long id, @RequestBody PlatformCategoryUpdateDTO platformCategoryUpdateDTO) {
+        platformService.updateCategoriesOfPlatform(id, platformCategoryUpdateDTO);
     }
 }

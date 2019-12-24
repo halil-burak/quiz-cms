@@ -18,7 +18,9 @@ import java.util.List;
 public class Platform extends BaseEntity implements Serializable {
     private String name;
 
-    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "platform_id")
     private List<Quiz> quizzes = new ArrayList<>();
 
     @ManyToMany
@@ -41,7 +43,23 @@ public class Platform extends BaseEntity implements Serializable {
         this.getQuizzes().add(quiz);
     }
 
-    private void remove(Quiz quiz) {
+    public void removeQuiz(Quiz quiz) {
         this.getQuizzes().remove(quiz);
+    }
+
+    public void addLanguage(Language language) {
+        this.getLanguages().add(language);
+    }
+
+    public void removeLanguage(Language language) {
+        this.getLanguages().remove(language);
+    }
+
+    public void addCategory(Category category) {
+        this.getCategories().add(category);
+    }
+
+    public void removeCategory(Category category) {
+        this.getCategories().remove(category);
     }
 }

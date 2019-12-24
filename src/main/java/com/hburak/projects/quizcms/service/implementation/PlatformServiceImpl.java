@@ -54,9 +54,19 @@ public class PlatformServiceImpl implements PlatformService {
 
     @Override
     public void update(Long id, PlatformUpdateDTO platformUpdateDTO) {
-        Platform platform = repository.getOne(id);
-        platform.setName(platformUpdateDTO.getName());
-        // todo add after filtering - use dto instance to mapping
+        if (repository.existsById(id)) {
+            Platform platform = repository.getOne(id);
+            platform.setName(platformUpdateDTO.getName());
+            platform.setCategories(platformUpdateDTO.getCategories().stream().map(aLong -> {
+                return new Category(aLong);
+            }).collect(Collectors.toList()));
+            platform.setLanguages(platformUpdateDTO.getLanguages().stream().map(aLong -> {
+                return new Language(aLong);
+            }).collect(Collectors.toList()));
+            platform.setQuizzes(platformUpdateDTO.getQuizzes().stream().map(aLong -> {
+                return new Quiz(aLong);
+            }).collect(Collectors.toList()));
+        }
     }
 
     @Override
@@ -84,12 +94,22 @@ public class PlatformServiceImpl implements PlatformService {
     @Override
     public void updateLangOfPlatform(Long id, PlatformLangUpdateDTO platformLangUpdateDTO) {
         Platform platform = repository.getOne(id);
-        platform.getLanguages().clear();
-        List<Language> languages = new ArrayList<>();
+        List<Language> languages = platform.getLanguages();
         for (Long lang : platformLangUpdateDTO.getLanguages()) {
             Language lang1 = new Language(lang);
             languages.add(lang1);
         }
-        platform.setLanguages(languages);
+        repository.save(platform);
+    }
+
+    @Override
+    public void updateCategoriesOfPlatform(Long id, PlatformCategoryUpdateDTO platformCategoryUpdateDTO) {
+        Platform platform = repository.getOne(id);
+        List<Category> categories = platform.getCategories();
+        for (Long c : platformCategoryUpdateDTO.getCategories()) {
+            Category ctg1 = new Category(c);
+            categories.add(ctg1);
+        }
+        repository.save(platform);
     }
 }

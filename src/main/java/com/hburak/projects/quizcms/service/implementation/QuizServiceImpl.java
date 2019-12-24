@@ -46,7 +46,16 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void update(Long id, QuizCreateDTO quizCreateDTO) {
-
+        if (repository.existsById(id)) {
+            Quiz quiz = repository.getOne(id);
+            quiz.setName(quizCreateDTO.getName());
+            quiz.setDescription(quizCreateDTO.getDescription());
+            quiz.setPlatform(new Platform(quizCreateDTO.getPlatformId()));
+            quiz.setLanguage(new Language(quizCreateDTO.getLanguageId()));
+            quiz.setCategories(quizCreateDTO.getCategoryIds().stream().map(aLong -> {
+                return new Category(aLong);
+            }).collect(Collectors.toList()));
+        }
     }
 
     @Override

@@ -54,7 +54,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void update(Long id, CategoryCreateDTO categoryUpdateDTO) {
-        //todo
+        if (repository.existsById(id)) {
+            Category category = repository.getOne(id);
+            category.setDescription(categoryUpdateDTO.getDescription());
+            category.setName(categoryUpdateDTO.getName());
+            category.setPlatforms(categoryUpdateDTO.getPlatformIds().stream().map(aLong -> {
+                return new Platform(aLong);
+            }).collect(Collectors.toList()));
+            category.setQuizzes(categoryUpdateDTO.getQuizIds().stream().map(aLong -> {
+                return new Quiz(aLong);
+            }).collect(Collectors.toList()));
+        }
     }
 
     @Override

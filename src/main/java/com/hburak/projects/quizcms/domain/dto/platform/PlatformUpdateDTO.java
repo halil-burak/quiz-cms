@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class PlatformUpdateDTO {
     private String name;
-    private List<CategoryGetDTO> categories = new ArrayList<>();
-    private List<QuizGetDTO> quizzes = new ArrayList<>();
-    private List<LanguageGetDTO> languages = new ArrayList<>();
+    private List<Long> categories = new ArrayList<>();
+    private List<Long> quizzes = new ArrayList<>();
+    private List<Long> languages = new ArrayList<>();
 }

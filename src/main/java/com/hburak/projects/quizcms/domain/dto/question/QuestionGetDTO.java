@@ -12,7 +12,7 @@ import java.util.List;
 public class QuestionGetDTO {
     private Long id;
     private List<Long> quizIds = new ArrayList<>();
-    private List<Answer> answers = new ArrayList<>();
+    private Long answerId;
     private Long langId;
     private String content;
     private String hint;
