@@ -1,7 +1,6 @@
 package com.hburak.projects.quizcms.service.implementation;
 
-import com.hburak.projects.quizcms.domain.dto.quiz.QuizCreateDTO;
-import com.hburak.projects.quizcms.domain.dto.quiz.QuizGetDTO;
+import com.hburak.projects.quizcms.domain.dto.quiz.*;
 import com.hburak.projects.quizcms.domain.entity.*;
 import com.hburak.projects.quizcms.repository.QuizRepository;
 import com.hburak.projects.quizcms.service.QuizService;
@@ -73,5 +72,31 @@ public class QuizServiceImpl implements QuizService {
         quizGetDTO.setPlatformId(quiz.getPlatform().getId());
         quizGetDTO.setLanguageId(quiz.getLanguage().getId());
         return quizGetDTO;
+    }
+
+    @Override
+    public void updateQuestionsOfQuiz(Long id, QuizQuestionUpdateDTO platformCategoryUpdateDTO) {
+        Quiz quiz = repository.getOne(id);
+        List<Question> questions = quiz.getQuestions();
+        for (Long q : platformCategoryUpdateDTO.getQuestionIds()) {
+            Question q1 = new Question(q);
+            questions.add(q1);
+        }
+        repository.save(quiz);
+    }
+
+    @Override
+    public void updatePlatformOfQuiz(Long id, QuizPlatformUpdateDTO quizPlatformUpdateDTO) {
+        Quiz quiz = repository.getOne(id);
+        Platform platform = new Platform(quizPlatformUpdateDTO.getPlatform());
+        quiz.setPlatform(platform);
+        platform.getQuizzes().add(quiz);
+    }
+
+    @Override
+    public void updateLanguageOfQuiz(Long id, QuizLanguageUpdateDTO quizLanguageUpdateDTO) {
+        Quiz quiz = repository.getOne(id);
+        Language language = new Language(quizLanguageUpdateDTO.getLanguageId());
+        quiz.setLanguage(language);
     }
 }

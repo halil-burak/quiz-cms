@@ -8,11 +8,6 @@ import java.util.List;
 
 @Getter
 @Setter
-public class QuestionGetDTO {
-    private Long id;
-    private List<Long> quizIds = new ArrayList<>();
+public class QuestionAnswerUpdateDTO {
     private List<String> answers = new ArrayList<>();
-    private Long langId;
-    private String content;
-    private String hint;
 }

@@ -1,6 +1,9 @@
 package com.hburak.projects.quizcms.controller;
 
+import com.hburak.projects.quizcms.domain.dto.question.QuestionAnswerUpdateDTO;
 import com.hburak.projects.quizcms.domain.dto.question.QuestionCreateDTO;
+import com.hburak.projects.quizcms.domain.dto.question.QuestionQuizzesUpdateDTO;
+import com.hburak.projects.quizcms.domain.dto.quiz.QuizLanguageUpdateDTO;
 import com.hburak.projects.quizcms.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,5 +41,15 @@ public class QuestionController {
     @DeleteMapping("/question/{id}")
     public void deleteQuestion(@PathVariable(name = "id") Long id) {
         questionService.delete(id);
+    }
+
+    @PutMapping("/{id}/set-answer")
+    public void updateLanguageOfQuiz(@PathVariable(name = "id") Long id, @RequestBody QuestionAnswerUpdateDTO questionAnswerUpdateDTO) {
+        questionService.updateAnswerForQuestion(id, questionAnswerUpdateDTO);
+    }
+
+    @PutMapping("/{id}/add-to-quiz")
+    public void updateLanguageOfQuiz(@PathVariable(name = "id") Long id, @RequestBody QuestionQuizzesUpdateDTO questionQuizzesUpdateDTO) {
+        questionService.updateQuizzesForQuestion(id, questionQuizzesUpdateDTO);
     }
 }

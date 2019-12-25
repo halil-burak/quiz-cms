@@ -1,8 +1,9 @@
 package com.hburak.projects.quizcms.service.implementation;
 
+import com.hburak.projects.quizcms.domain.dto.question.QuestionAnswerUpdateDTO;
 import com.hburak.projects.quizcms.domain.dto.question.QuestionCreateDTO;
 import com.hburak.projects.quizcms.domain.dto.question.QuestionGetDTO;
-import com.hburak.projects.quizcms.domain.entity.Answer;
+import com.hburak.projects.quizcms.domain.dto.question.QuestionQuizzesUpdateDTO;
 import com.hburak.projects.quizcms.domain.entity.Language;
 import com.hburak.projects.quizcms.domain.entity.Question;
 import com.hburak.projects.quizcms.domain.entity.Quiz;
@@ -31,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
                 questionGetDTO.setHint(question.getHint());
                 questionGetDTO.setId(question.getId());
                 questionGetDTO.setLangId(question.getLanguage().getId());
-                questionGetDTO.setAnswerId(question.getAnswer().getId());
+                questionGetDTO.setAnswers(question.getAnswers());
                 questionGetDTO.setQuizIds(question.getQuizzes().stream().map(Quiz::getId).collect(Collectors.toList()));
                 return questionGetDTO;
             }
@@ -41,11 +42,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Long save(QuestionCreateDTO questionCreateDTO) {
         Question question = Question.builder()
-                .answer(new Answer(questionCreateDTO.getAnswerId()))
+                .answers(questionCreateDTO.getAnswers())
                 .content(questionCreateDTO.getContent())
                 .hint(questionCreateDTO.getHint())
                 // ***PERFORMANCE HINT*** new Language(questionCreateDTO.getLangId() -> instead of querying the database
                 .language(new Language(questionCreateDTO.getLangId()))
+                //.language(languageRepository.getOne(questionCreateDTO.getLangId()))
                 .quizzes(questionCreateDTO.getQuizIds().stream().map(aLong -> {
                     Quiz quiz = new Quiz();
                     quiz.setId(aLong);
@@ -63,7 +65,7 @@ public class QuestionServiceImpl implements QuestionService {
             question.setContent(questionCreateDTO.getContent());
             question.setHint(questionCreateDTO.getHint());
             question.setLanguage(new Language(questionCreateDTO.getLangId()));
-            question.setAnswer(new Answer(questionCreateDTO.getAnswerId()));
+            question.setAnswers(questionCreateDTO.getAnswers());
             question.setQuizzes(questionCreateDTO.getQuizIds().stream().map(aLong -> {
                 return new Quiz(aLong);
             }).collect(Collectors.toList()));
@@ -81,10 +83,26 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = repository.getOne(id);
         questionGetDTO.setId(question.getId());
         questionGetDTO.setQuizIds(question.getQuizzes().stream().map(Quiz::getId).collect(Collectors.toList()));
-        questionGetDTO.setAnswerId(question.getAnswer().getId());
+        questionGetDTO.setAnswers(question.getAnswers());
         questionGetDTO.setLangId(question.getLanguage().getId());
         questionGetDTO.setHint(question.getHint());
         questionGetDTO.setContent(question.getContent());
         return questionGetDTO;
+    }
+
+    @Override
+    public void updateAnswerForQuestion(Long id, QuestionAnswerUpdateDTO questionAnswerUpdateDTO) {
+        Question question = repository.getOne(id);
+        for (String s : questionAnswerUpdateDTO.getAnswers()) {
+            question.getAnswers().add(s);
+        }
+    }
+
+    @Override
+    public void updateQuizzesForQuestion(Long id, QuestionQuizzesUpdateDTO questionQuizzesUpdateDTO) {
+        Question question = repository.getOne(id);
+        for (Long qLong : questionQuizzesUpdateDTO.getQuizIds()) {
+            question.getQuizzes().add(new Quiz(qLong));
+        }
     }
 }

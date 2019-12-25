@@ -1,7 +1,6 @@
 package com.hburak.projects.quizcms.service;
 
-import com.hburak.projects.quizcms.domain.dto.quiz.QuizCreateDTO;
-import com.hburak.projects.quizcms.domain.dto.quiz.QuizGetDTO;
+import com.hburak.projects.quizcms.domain.dto.quiz.*;
 
 import java.util.List;
 
@@ -11,4 +10,7 @@ public interface QuizService {
     void update(Long id, QuizCreateDTO quizCreateDTO);
     void delete(Long id);
     QuizGetDTO getOne(Long id);
+    void updateQuestionsOfQuiz(Long id, QuizQuestionUpdateDTO platformCategoryUpdateDTO);
+    void updatePlatformOfQuiz(Long id, QuizPlatformUpdateDTO quizPlatformUpdateDTO);
+    void updateLanguageOfQuiz(Long id, QuizLanguageUpdateDTO quizLanguageUpdateDTO);
 }

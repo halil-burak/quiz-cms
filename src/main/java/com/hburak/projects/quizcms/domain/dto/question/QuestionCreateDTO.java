@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class QuestionCreateDTO {
     private List<Long> quizIds = new ArrayList<>();
-    private Long answerId;
+    private List<String> answers = new ArrayList<>();
     private Long langId;
     private String content;
     private String hint;

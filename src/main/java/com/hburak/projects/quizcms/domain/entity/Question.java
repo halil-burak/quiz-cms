@@ -19,7 +19,7 @@ public class Question extends BaseEntity implements Serializable {
     private String content;
     private String hint;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "language_id", referencedColumnName = "id")
     private Language language;
 
@@ -29,9 +29,14 @@ public class Question extends BaseEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "quiz_id"))
     private List<Quiz> quizzes = new ArrayList<>();
 
+    /*
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "answer_id", referencedColumnName = "id")
-    private Answer answer;
+    private Answer answer;*/
+
+    @Column
+    @ElementCollection(targetClass=String.class)
+    private List<String> answers = new ArrayList<>();
 
     public Question(Long id) {
         super.setId(id);
