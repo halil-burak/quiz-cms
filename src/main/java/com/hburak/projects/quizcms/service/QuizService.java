@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface QuizService {
     List<QuizGetDTO> getAll();
+    List<QuizGetExtendedDTO> getAllExtended();
     Long save(QuizCreateDTO quizCreateDTO);
     void update(Long id, QuizCreateDTO quizCreateDTO);
     void delete(Long id);

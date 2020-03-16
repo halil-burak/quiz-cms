@@ -35,7 +35,6 @@ public class Quiz extends BaseEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
-    //todo turn into many to one
     //@OneToOne(cascade = CascadeType.ALL)
     //@JoinColumn(name = "language_id", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.LAZY)

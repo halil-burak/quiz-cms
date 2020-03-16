@@ -38,4 +38,3 @@ public class Category extends BaseEntity implements Serializable {
         super.setId(id);
     }
 }
-// todo fix the jpa annotations and place the join tables for many to many relationships

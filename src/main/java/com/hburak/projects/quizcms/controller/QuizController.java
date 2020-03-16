@@ -23,6 +23,11 @@ public class QuizController {
         return new ResponseEntity<Object>(quizService.getAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/listAllWithQuestions")
+    public ResponseEntity<?> getQuizzesWithQuestions() {
+        return new ResponseEntity<Object>(quizService.getAllExtended(), HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public Long addQuiz(@RequestBody QuizCreateDTO quizCreateDTO) {
         return quizService.save(quizCreateDTO);

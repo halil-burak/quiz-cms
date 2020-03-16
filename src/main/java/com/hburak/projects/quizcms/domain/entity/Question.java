@@ -19,9 +19,8 @@ public class Question extends BaseEntity implements Serializable {
     private String content;
     private String hint;
 
-    //todo turn into many to one
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "language_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "language_id")
     private Language language;
 
     @ManyToMany

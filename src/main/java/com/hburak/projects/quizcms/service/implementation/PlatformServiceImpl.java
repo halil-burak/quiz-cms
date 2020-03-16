@@ -87,7 +87,6 @@ public class PlatformServiceImpl implements PlatformService {
 
     @Override
     public List<PlatformLightDTO> getPlatformsByCategory(Long categoryId) {
-        // todo
         return repository.findByCategoriesId(categoryId).stream().map(platform -> {
             PlatformLightDTO platformLightDTO = new PlatformLightDTO();
             platformLightDTO.setId(platform.getId());

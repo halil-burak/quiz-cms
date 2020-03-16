@@ -1,5 +1,6 @@
 package com.hburak.projects.quizcms.service.implementation;
 
+import com.hburak.projects.quizcms.domain.dto.question.QuestionGetDTO;
 import com.hburak.projects.quizcms.domain.dto.quiz.*;
 import com.hburak.projects.quizcms.domain.entity.*;
 import com.hburak.projects.quizcms.repository.QuizRepository;
@@ -26,6 +27,28 @@ public class QuizServiceImpl implements QuizService {
             quizGetDTO.setDescription(quiz.getDescription());
             quizGetDTO.setLanguageId(quiz.getLanguage().getId());
             quizGetDTO.setPlatformId(quiz.getPlatform().getId());
+            return quizGetDTO;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<QuizGetExtendedDTO> getAllExtended() {
+        return repository.findAll().stream().map(quiz -> {
+            QuizGetExtendedDTO quizGetDTO = new QuizGetExtendedDTO();
+            quizGetDTO.setId(quiz.getId());
+            quizGetDTO.setName(quiz.getName());
+            quizGetDTO.setDescription(quiz.getDescription());
+            quizGetDTO.setLanguageId(quiz.getLanguage().getId());
+            quizGetDTO.setPlatformId(quiz.getPlatform().getId());
+            quizGetDTO.setQuestions(quiz.getQuestions().stream().map(question -> {
+                QuestionGetDTO questionGetDTO = new QuestionGetDTO();
+                questionGetDTO.setAnswers(question.getAnswers());
+                questionGetDTO.setContent(question.getContent());
+                questionGetDTO.setHint(question.getHint());
+                questionGetDTO.setId(question.getId());
+                questionGetDTO.setLangId(question.getLanguage().getId());
+                return questionGetDTO;
+            }).collect(Collectors.toList()));
             return quizGetDTO;
         }).collect(Collectors.toList());
     }
