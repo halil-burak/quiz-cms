@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,29 +86,30 @@ public class PlatformServiceImpl implements PlatformService {
     }
 
     @Override
-    public List<PlatformCreateDTO> getPlatformsByCategory(Long categoryId) {
-        return null;
+    public List<PlatformLightDTO> getPlatformsByCategory(Long categoryId) {
+        // todo
+        return repository.findByCategoriesId(categoryId).stream().map(platform -> {
+            PlatformLightDTO platformLightDTO = new PlatformLightDTO();
+            platformLightDTO.setId(platform.getId());
+            return platformLightDTO;
+        }).collect(Collectors.toList());
     }
 
+    //todo stream map filter
     @Override
     public void updateLangOfPlatform(Long id, PlatformLangUpdateDTO platformLangUpdateDTO) {
         Platform platform = repository.getOne(id);
-        List<Language> languages = platform.getLanguages();
-        for (Long lang : platformLangUpdateDTO.getLanguages()) {
-            Language lang1 = new Language(lang);
-            languages.add(lang1);
-        }
-        repository.save(platform);
+        platform.setLanguages((platformLangUpdateDTO.getLanguages().stream().map(aLong -> {
+            return new Language(aLong);
+        }).collect(Collectors.toList())));
     }
 
+    //todo stream map filter
     @Override
     public void updateCategoriesOfPlatform(Long id, PlatformCategoryUpdateDTO platformCategoryUpdateDTO) {
         Platform platform = repository.getOne(id);
-        List<Category> categories = platform.getCategories();
-        for (Long c : platformCategoryUpdateDTO.getCategories()) {
-            Category ctg1 = new Category(c);
-            categories.add(ctg1);
-        }
-        repository.save(platform);
+        platform.setCategories(platformCategoryUpdateDTO.getCategories().stream().map(aLong -> {
+            return new Category(aLong);
+        }).collect(Collectors.toList()));
     }
 }

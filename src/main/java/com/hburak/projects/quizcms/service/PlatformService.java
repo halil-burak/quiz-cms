@@ -10,7 +10,7 @@ public interface PlatformService {
     void update(Long id, PlatformUpdateDTO platformUpdateDTO);
     void delete(Long id);
     PlatformLightGetDTO getOne(Long id);
-    List<PlatformCreateDTO> getPlatformsByCategory(Long categoryId);
+    List<PlatformLightDTO> getPlatformsByCategory(Long categoryId);
     void updateLangOfPlatform(Long id, PlatformLangUpdateDTO platformLangUpdateDTO);
     void updateCategoriesOfPlatform(Long id, PlatformCategoryUpdateDTO platformCategoryUpdateDTO);
 }

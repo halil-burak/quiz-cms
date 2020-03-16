@@ -2,6 +2,7 @@ package com.hburak.projects.quizcms.controller;
 
 import com.hburak.projects.quizcms.domain.dto.category.CategoryCreateDTO;
 import com.hburak.projects.quizcms.service.CategoryService;
+import com.hburak.projects.quizcms.service.PlatformService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final PlatformService platformService;
 
     @GetMapping("/listAll")
     public ResponseEntity<?> getCategories() {
@@ -38,5 +40,10 @@ public class CategoryController {
     @PutMapping("/update/{id}")
     public void updateCategory(@PathVariable(name = "id") Long id, @RequestBody CategoryCreateDTO categoryUpdateDTO) {
         categoryService.update(id, categoryUpdateDTO);
+    }
+
+    @GetMapping("/category/{id}/platforms")
+    public ResponseEntity<?> getPlatformsByCategory(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<Object>(platformService.getPlatformsByCategory(id), HttpStatus.OK);
     }
 }
